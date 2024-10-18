@@ -1,20 +1,3 @@
-//
-// Copyright 2016 James McGuire
-// Copyright 2016 Michael McConville <mmcco@mykolab.com>
-//
-// This code is covered under the MIT License
-// Please refer to the LICENSE file in the root of this
-// repository for any information.
-
-// Package mediawiki provides a wrapper for interacting with the Mediawiki API
-//
-// Please see https://www.mediawiki.org/wiki/API:Main_page
-// for any API specific information or refer to any of the
-// functions defined for the MWApi struct for information
-// regarding this specific implementation.
-//
-// The examples/ subdirectory contains an example application
-// that uses this API.
 package mediawiki
 
 import (
@@ -156,9 +139,6 @@ func checkError(response []byte) error {
 }
 
 // New generates a new MediaWiki API (MWApi) struct.
-//
-// Example: mediawiki.New("https://en.wikipedia.org/w/api.php", "My Mediawiki Bot")
-// Returns errors if the URL is invalid
 func New(wikiURL, userAgent string) (*MWApi, error) {
 	cookiejar, err := cookiejar.New(nil)
 	if err != nil {
@@ -439,15 +419,6 @@ func (m *MWApi) Logout() {
 //
 // This function will request an edit token if the MWApi struct doesn't already
 // contain one.
-//
-// Example:
-//
-//	editConfig := map[string]string{
-//	    "title":   "SOME PAGE",
-//	    "summary": "THIS IS WHAT SHOWS UP IN THE LOG",
-//	    "text":    "THE ENTIRE TEXT OF THE PAGE",
-//	}
-//	err = client.Edit(editConfig)
 func (m *MWApi) Edit(values map[string]string) error {
 	if m.edittoken == "" {
 		err := m.GetEditToken()
