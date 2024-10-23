@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
+	"runtime"
 	"strings"
 	"time"
 )
@@ -139,7 +140,7 @@ func checkError(response []byte) error {
 }
 
 // New generates a new MediaWiki API (MWApi) struct.
-func New(wikiURL, userAgent string) (*MWApi, error) {
+func New(wikiURL string) (*MWApi, error) {
 	cookiejar, err := cookiejar.New(nil)
 	if err != nil {
 		return nil, err
@@ -160,7 +161,7 @@ func New(wikiURL, userAgent string) (*MWApi, error) {
 		url:       clientURL,
 		client:    &client,
 		format:    "json",
-		userAgent: "mediawiki (Golang) https://github.com/sadbox/mediawiki " + userAgent,
+		userAgent: "GO-Mediawiki/0.0.0 (Golang" + runtime.Version() + ") ",
 	}, nil
 }
 

@@ -17,7 +17,7 @@ func Example_login_to_wiki() {
 		url      = "https://zh.wikipedia.org/w/api.php"
 	)
 
-	mw, err := mediawiki.New(url, "")
+	mw, err := mediawiki.New(url)
 	if err != nil {
 		log.Fatal(err)
 	}
