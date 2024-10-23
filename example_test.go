@@ -37,7 +37,7 @@ func ExampleMWApi_Edit() {
 		password = "11f5c0050e1a2f05d60be79d671f38e1"
 		url      = "https://zh.wikipedia.org/w/api.php"
 	)
-	mw, err := mediawiki.New(url, "")
+	mw, err := mediawiki.New(url)
 	if err != nil {
 		log.Fatal(err)
 	}
