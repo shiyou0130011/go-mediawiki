@@ -2,6 +2,7 @@ package mediawiki
 
 import (
 	"encoding/json"
+	"errors"
 )
 
 // Unmarshall response from page edits for query action
@@ -15,6 +16,56 @@ type outerQuery struct {
 			Title string
 		}
 	}
+}
+
+func (m *MWApi) PageCategoryList(title string) (result []string) {
+	query := map[string]string{
+		"action": "parse",
+		"format": "json",
+		"page":   title,
+		"prop":   "categories",
+	}
+	b, err := m.API(query)
+	if err != nil {
+		return
+	}
+
+	var apiResult struct {
+		Parse struct {
+			Title      string `json:"title"`
+			PageID     int    `json:"pageid"`
+			Categories []struct {
+				Name string `json:"*"`
+			}
+		}
+	}
+
+	if err := json.Unmarshal(b, &apiResult); err != nil {
+		return
+	}
+	for _, c := range apiResult.Parse.Categories {
+		result = append(result, c.Name)
+	}
+	return
+
+}
+
+func (m *MWApi) AddCategory(title, category string) error {
+	pageCurrentCategoryList := m.PageCategoryList(title)
+	for _, s := range pageCurrentCategoryList {
+		if s == category {
+			return errors.New("category is already exists")
+		}
+	}
+
+	query := map[string]string{
+		"title":      title,
+		"action":     "edit",
+		"format":     "json",
+		"appendtext": "\n[[category:" + category + "]]",
+	}
+	_, err := m.API(query)
+	return err
 }
 
 // SearchByCategory find all pages list with given category.
