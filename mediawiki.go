@@ -30,45 +30,6 @@ type MWApi struct {
 	BasicAuthPass string
 }
 
-// Unmarshal login data...
-type outerLogin struct {
-	Login struct {
-		Result string
-		Token  string
-	}
-}
-
-// Unmarshall response from page edits...
-type outerEdit struct {
-	Edit struct {
-		Result   string
-		PageId   int
-		Title    string
-		OldRevId int
-		NewRevId int
-	}
-}
-
-type tokenResponse struct {
-	Query struct {
-		Tokens struct {
-			Csrftoken string
-		}
-	}
-}
-
-// Response is a struct used for unmarshaling the MediaWiki JSON response.
-type Response struct {
-	Query struct {
-		// The JSON response for this part of the struct is dumb.
-		// It will return something like { '23': { 'pageid': 23 ...
-		//
-		// As a workaround you can use PageSlice which will create
-		// a list of pages from the map.
-		Pages map[string]Page
-	}
-}
-
 // PageSlice generates a slice from Pages to work around the sillyness in
 // the MediaWiki API.
 func (r *Response) PageSlice() []Page {
@@ -110,19 +71,6 @@ type Page struct {
 	Imageinfo []struct {
 		Url            string
 		Descriptionurl string
-	}
-}
-
-type mwError struct {
-	Error struct {
-		Code string
-		Info string
-	}
-}
-
-type uploadResponse struct {
-	Upload struct {
-		Result string
 	}
 }
 

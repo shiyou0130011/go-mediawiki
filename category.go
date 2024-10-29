@@ -30,15 +30,7 @@ func (m *MWApi) PageCategoryList(title string) (result []string) {
 		return
 	}
 
-	var apiResult struct {
-		Parse struct {
-			Title      string `json:"title"`
-			PageID     int    `json:"pageid"`
-			Categories []struct {
-				Name string `json:"*"`
-			}
-		}
-	}
+	var apiResult parseResponse
 
 	if err := json.Unmarshal(b, &apiResult); err != nil {
 		return
