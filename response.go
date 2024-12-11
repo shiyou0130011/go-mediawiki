@@ -51,11 +51,9 @@ type starData struct {
 
 type parseResponse struct {
 	Parse struct {
-		Title      string `json:"title"`
-		PageID     int    `json:"pageid"`
-		Categories []struct {
-			Name string `json:"*"`
-		}
+		Title         string     `json:"title"`
+		PageID        int        `json:"pageid"`
+		Categories    []starData `json:"categories"`
 		HTML          starData   `json:"text"`     // 內文的 HTML code
 		WikiText      starData   `json:"wikitext"` // 內文的 wiki code
 		Links         []starData `json:"links"`

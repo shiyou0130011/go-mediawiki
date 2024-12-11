@@ -36,7 +36,7 @@ func (m *MWApi) PageCategoryList(title string) (result []string) {
 		return
 	}
 	for _, c := range apiResult.Parse.Categories {
-		result = append(result, c.Name)
+		result = append(result, c.Data)
 	}
 	return
 
@@ -80,6 +80,9 @@ func (m *MWApi) SearchByCategory(category string) (result []string) {
 		}
 
 		data, err := m.API(query, subQuery)
+		if err != nil {
+			break
+		}
 		o := outerQuery{}
 		err = json.Unmarshal(data, &o)
 		if err != nil {
