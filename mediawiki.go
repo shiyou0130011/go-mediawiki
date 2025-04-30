@@ -398,6 +398,8 @@ func (m *MWApi) Edit(values map[string]string) error {
 
 // Read returns the most recent revision of a Page. If an error occurs, nil is
 // returned.
+//
+// Deprecated: This func was from sadbox/mediawiki. It is not used in this library. Please use “func (*MWApi) PageContent(string)” to get the content of a page.
 func (m *MWApi) Read(pageName string) (*Page, error) {
 	query := map[string]string{
 		"action":  "query",
