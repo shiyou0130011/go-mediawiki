@@ -18,6 +18,7 @@ type outerQuery struct {
 	}
 }
 
+// PageCategoryList returns a list of categories for the given page title.
 func (m *MWApi) PageCategoryList(title string) (result []string) {
 	query := map[string]string{
 		"action": "parse",
@@ -42,6 +43,7 @@ func (m *MWApi) PageCategoryList(title string) (result []string) {
 
 }
 
+// AddCategory adds a category to the given page title.
 func (m *MWApi) AddCategory(title, category string) error {
 	pageCurrentCategoryList := m.PageCategoryList(title)
 	for _, s := range pageCurrentCategoryList {
