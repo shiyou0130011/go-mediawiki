@@ -21,7 +21,7 @@ func (m *MWApi) PageContent(title string) (string, error) {
 	return result.Parse.WikiText.Data, nil
 }
 
-// Get all section of page
+// SectionList will return all section title of page.
 func (m *MWApi) SectionList(title string) (result []string, err error) {
 	data, err := m.API(map[string]string{
 		"action": "parse",
