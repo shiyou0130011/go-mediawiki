@@ -101,7 +101,7 @@ func ExampleMWApi_PageCategoryList() {
 
 }
 
-func Example_MWApi_SectionList() {
+func ExampleMWApi_SectionList() {
 	// When a page's wiki content is following:
 	//
 	// 	= Lorem Ipsum =
