@@ -101,7 +101,7 @@ func ExampleMWApi_PageCategoryList() {
 
 }
 
-func ExampleMWApi_SectionList() {
+func ExampleMWApi_SectionTitleList() {
 	// When a page's wiki content is following:
 	//
 	// 	= Lorem Ipsum =
@@ -136,7 +136,7 @@ func ExampleMWApi_SectionList() {
 	}
 	defer mw.Logout()
 
-	sections, err := mw.SectionList(pageTitle)
+	sections, err := mw.SectionTitleList(pageTitle)
 	if err != nil {
 		log.Fatal(err)
 	}
