@@ -73,7 +73,7 @@ func ExampleMWApi_PageCategoryList() {
 	//	== Vivamus feugiat ==
 	//
 	//	Vivamus feugiat nulla tempor, lobortis sem eget. vulputate tortor. Sed tincidunt mi sem, nec fermentum dolor vestibulum ac.
-
+	//
 	//	[[category:foo]]
 	//	[[category:bar]]
 	//	[[category:example]]
