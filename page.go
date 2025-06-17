@@ -17,6 +17,9 @@ func (m *MWApi) PageContent(title string) (string, error) {
 		return "", err
 	}
 
+	if err = checkError(data); err != nil {
+		return "", err
+	}
 	var result parseResponse
 	if err := json.Unmarshal(data, &result); err != nil {
 		return "", err
@@ -35,6 +38,10 @@ func (m *MWApi) SectionContent(title string, sectionIndex int) (string, error) {
 		"section": fmt.Sprint(sectionIndex),
 	})
 	if err != nil {
+		return "", err
+	}
+
+	if err = checkError(data); err != nil {
 		return "", err
 	}
 
@@ -58,6 +65,9 @@ func (m *MWApi) SectionTitleList(title string) (result []string, err error) {
 		return
 	}
 
+	if err = checkError(data); err != nil {
+		return
+	}
 	var respResult parseResponse
 	if err = json.Unmarshal(data, &respResult); err != nil {
 		return
