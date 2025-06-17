@@ -1,7 +1,10 @@
 package mediawiki
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
+// PageContent will return the content of a page in wikitext format.
 func (m *MWApi) PageContent(title string) (string, error) {
 	data, err := m.API(map[string]string{
 		"action": "parse",
