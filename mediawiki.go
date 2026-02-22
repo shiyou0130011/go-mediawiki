@@ -192,6 +192,11 @@ func (m *MWApi) Download(filename string) (io.ReadCloser, error) {
 	return resp.Body, nil
 }
 
+type UploadConfig struct {
+	FileComment string // Upload comment. Also used as the initial page text for new files if text is not specified.
+	Text string // Initial page text for the file.
+}
+
 // Upload a file
 //
 // This does a simple, but more error-prone upload. Mediawiki
@@ -199,7 +204,7 @@ func (m *MWApi) Download(filename string) (io.ReadCloser, error) {
 // versions of the API.
 //
 // Automatically retrieves an edit token if necessary.
-func (m *MWApi) Upload(dstFilename string, file io.Reader) error {
+func (m *MWApi) Upload(dstFilename string, file io.Reader, config *UploadConfig) error {
 	if m.edittoken == "" {
 		err := m.GetEditToken()
 		if err != nil {
