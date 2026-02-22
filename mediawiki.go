@@ -194,7 +194,7 @@ func (m *MWApi) Download(filename string) (io.ReadCloser, error) {
 
 type UploadConfig struct {
 	FileComment string // Upload comment. Also used as the initial page text for new files if text is not specified.
-	Text string // Initial page text for the file.
+	Text        string // Initial page text for the file.
 }
 
 // Upload a file
