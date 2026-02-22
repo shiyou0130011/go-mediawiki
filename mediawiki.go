@@ -219,6 +219,11 @@ func (m *MWApi) Upload(dstFilename string, file io.Reader, config *UploadConfig)
 		"format":   m.format,
 	}
 
+	if config != nil {
+		query["comment"] = config.FileComment
+		query["text"] = config.Text
+	}
+
 	buffer := &bytes.Buffer{}
 	writer := multipart.NewWriter(buffer)
 
