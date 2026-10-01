@@ -13,6 +13,7 @@ import (
 type UploadConfig struct {
 	FileComment string // Upload comment. Also used as the initial page text for new files if text is not specified.
 	Text        string // Initial page text for the file.
+	Summary     string // Upload summary.
 }
 
 // Upload a file
@@ -38,13 +39,19 @@ func (m *MWApi) Upload(dstFilename string, file io.Reader, config *UploadConfig)
 	}
 
 	if config != nil {
-		if config.FileComment != "" {
-			query["comment"] = config.FileComment
-		}
-		if config.Text != "" {
-			query["text"] = config.Text
-		}
+		config = &UploadConfig{}
+	}
 
+	if config.FileComment != "" {
+		query["comment"] = config.FileComment
+	}
+	if config.Text != "" {
+		query["text"] = config.Text
+	}
+	if config.Summary != "" {
+		query["text"] = config.Summary
+	} else {
+		query["summary"] = "Auto upload by go-mediawiki library."
 	}
 
 	buffer := &bytes.Buffer{}
