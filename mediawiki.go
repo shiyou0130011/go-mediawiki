@@ -138,7 +138,6 @@ func (m *MWApi) postForm(query url.Values) ([]byte, error) {
 	return body, nil
 }
 
-
 // Login to the Mediawiki Website.
 func (m *MWApi) Login(username, password string) error {
 	if username == "" {
@@ -231,38 +230,6 @@ func (m *MWApi) GetEditToken() error {
 // Logout of the MediaWiki website
 func (m *MWApi) Logout() {
 	m.API(map[string]string{"action": "logout"})
-}
-
-// Edit a page.
-//
-// This function will request an edit token if the MWApi struct doesn't already
-// contain one.
-func (m *MWApi) Edit(values map[string]string) error {
-	if m.edittoken == "" {
-		err := m.GetEditToken()
-		if err != nil {
-			return err
-		}
-	}
-	query := map[string]string{
-		"action": "edit",
-		"token":  m.edittoken,
-	}
-	body, err := m.API(query, values)
-	if err != nil {
-		return err
-	}
-
-	var response outerEdit
-	err = json.Unmarshal(body, &response)
-	if err != nil {
-		return err
-	}
-
-	if response.Edit.Result != "Success" {
-		return errors.New(response.Edit.Result)
-	}
-	return nil
 }
 
 // Read returns the most recent revision of a Page. If an error occurs, nil is
