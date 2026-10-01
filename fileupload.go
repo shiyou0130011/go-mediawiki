@@ -38,8 +38,13 @@ func (m *MWApi) Upload(dstFilename string, file io.Reader, config *UploadConfig)
 	}
 
 	if config != nil {
-		query["comment"] = config.FileComment
-		query["text"] = config.Text
+		if config.FileComment != "" {
+			query["comment"] = config.FileComment
+		}
+		if config.Text != "" {
+			query["text"] = config.Text
+		}
+
 	}
 
 	buffer := &bytes.Buffer{}
