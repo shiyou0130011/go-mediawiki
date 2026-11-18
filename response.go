@@ -23,11 +23,7 @@ type outerEdit struct {
 
 type tokenResponse = response.TokenAPIResp
 
-type uploadResponse struct {
-	Upload struct {
-		Result string
-	}
-}
+type uploadResponse = response.UploadAPIResp
 
 // Response is a struct used for unmarshaling the MediaWiki JSON response.
 type Response struct {
