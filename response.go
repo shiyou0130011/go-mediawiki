@@ -37,9 +37,7 @@ type Response struct {
 	}
 }
 
-type starData struct {
-	Data string `json:"*"`
-}
+type starData = response.StarStringData
 
 type parseResponse = response.ParseAPIResp
 
