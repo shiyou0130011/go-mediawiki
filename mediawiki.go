@@ -74,16 +74,13 @@ type Page struct {
 }
 
 // Helper function for translating MediaWiki errors in to Golang errors.
-func checkError(response []byte) error {
-	var mwerror mwError
-	err := json.Unmarshal(response, &mwerror)
+func checkError(resp []byte) error {
+	var mwerror response.ErrorResp
+	err := json.Unmarshal(resp, &mwerror)
 	if err != nil {
 		return nil
-	} else if mwerror.Error.Code != "" {
-		return errors.New(mwerror.Error.Code + ": " + mwerror.Error.Info)
-	} else {
-		return nil
 	}
+	return &mwerror
 }
 
 // New generates a new MediaWiki API (MWApi) struct.
@@ -166,7 +163,7 @@ func (m *MWApi) Login(username, password string) error {
 		return err
 	}
 
-	var response outerLogin
+	var response response.LoginAPIResp
 	err = json.Unmarshal(body, &response)
 	if err != nil {
 		return err

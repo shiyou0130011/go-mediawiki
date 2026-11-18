@@ -3,12 +3,7 @@ package mediawiki
 import "github.com/shiyou0130011/go-mediawiki/internal/dto/response"
 
 // Unmarshal login data...
-type outerLogin struct {
-	Login struct {
-		Result string
-		Token  string
-	}
-}
+type outerLogin = response.LoginAPIResp
 
 // Unmarshall response from page edits...
 type outerEdit = response.EditPageAPIResp
@@ -33,9 +28,4 @@ type starData = response.StarStringData
 
 type parseResponse = response.ParseAPIResp
 
-type mwError struct {
-	Error struct {
-		Code string
-		Info string
-	}
-}
+type mwError = response.ErrorResp
