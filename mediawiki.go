@@ -10,6 +10,8 @@ import (
 	"runtime"
 	"strings"
 	"time"
+
+	"github.com/shiyou0130011/go-mediawiki/internal/dto/response"
 )
 
 // MWApi is used to interact with the MediaWiki server.
@@ -214,7 +216,7 @@ func (m *MWApi) GetEditToken() error {
 	if err != nil {
 		return err
 	}
-	var response tokenResponse
+	var response response.TokenAPIResp
 	err = json.Unmarshal(body, &response)
 	if err != nil {
 		return err

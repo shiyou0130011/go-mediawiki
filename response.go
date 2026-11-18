@@ -21,13 +21,7 @@ type outerEdit struct {
 	}
 }
 
-type tokenResponse struct {
-	Query struct {
-		Tokens struct {
-			Csrftoken string
-		}
-	}
-}
+type tokenResponse = response.TokenAPIResp
 
 type uploadResponse struct {
 	Upload struct {
