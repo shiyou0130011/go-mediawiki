@@ -3,6 +3,8 @@ package mediawiki
 import (
 	"encoding/json"
 	"errors"
+
+	"github.com/shiyou0130011/go-mediawiki/internal/dto/response"
 )
 
 // Unmarshall response from page edits for query action
@@ -31,7 +33,7 @@ func (m *MWApi) PageCategoryList(title string) (result []string) {
 		return
 	}
 
-	var apiResult parseResponse
+	var apiResult response.ParseAPIResp
 
 	if err := json.Unmarshal(b, &apiResult); err != nil {
 		return

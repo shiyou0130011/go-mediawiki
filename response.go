@@ -1,5 +1,7 @@
 package mediawiki
 
+import "github.com/shiyou0130011/go-mediawiki/internal/dto/response"
+
 // Unmarshal login data...
 type outerLogin struct {
 	Login struct {
@@ -49,30 +51,7 @@ type starData struct {
 	Data string `json:"*"`
 }
 
-type parseResponse struct {
-	Parse struct {
-		Title         string     `json:"title"`
-		PageID        int        `json:"pageid"`
-		Categories    []starData `json:"categories"`
-		HTML          starData   `json:"text"`     // 內文的 HTML code
-		WikiText      starData   `json:"wikitext"` // 內文的 wiki code
-		Links         []starData `json:"links"`
-		Images        []string   `json:"images"`
-		Templates     []starData `json:"templates"` // 使用的模板
-		ExternalLinks []string   `json:"externallinks"`
-		Sections      []struct {
-			TocLevel   int    `json:"toclevel"`
-			Level      string `json:"level"`
-			Line       string `json:"line"`
-			Number     string `json:"number"`
-			Index      string `json:"index"`
-			Fromtitle  string `json:"fromtitle"`
-			ByteOffset int    `json:"byteoffset"`
-			Anchor     string `json:"anchor"`
-		} `json:"sections"`
-		DisplayTitle string `json:"displaytitle"`
-	} `json:"parse"`
-}
+type parseResponse = response.ParseAPIResp
 
 type mwError struct {
 	Error struct {
