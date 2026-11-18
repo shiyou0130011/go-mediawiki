@@ -11,15 +11,7 @@ type outerLogin struct {
 }
 
 // Unmarshall response from page edits...
-type outerEdit struct {
-	Edit struct {
-		Result   string
-		PageId   int
-		Title    string
-		OldRevId int
-		NewRevId int
-	}
-}
+type outerEdit = response.EditPageAPIResp
 
 type tokenResponse = response.TokenAPIResp
 
