@@ -5,6 +5,8 @@ import (
 	"errors"
 	"io"
 	"net/http"
+
+	"github.com/shiyou0130011/go-mediawiki/internal/dto/response"
 )
 
 // Download a file.
@@ -25,12 +27,13 @@ func (m *MWApi) Download(filename string) (io.ReadCloser, error) {
 		return nil, err
 	}
 
-	var response Response
-	err = json.Unmarshal(body, &response)
+	var pageResponse response.PageAPIResponse
+
+	err = json.Unmarshal(body, &pageResponse)
 	if err != nil {
 		return nil, err
 	}
-	pl := response.PageSlice()
+	pl := pageResponse.PageSlice()
 
 	if len(pl) < 1 {
 		return nil, errors.New("no file found")
