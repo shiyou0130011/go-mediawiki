@@ -3,6 +3,8 @@ package mediawiki
 import (
 	"encoding/json"
 	"errors"
+
+	"github.com/shiyou0130011/go-mediawiki/internal/dto/response"
 )
 
 // Edit a page.
@@ -25,7 +27,7 @@ func (m *MWApi) Edit(values map[string]string) error {
 		return err
 	}
 
-	var response outerEdit
+	var response response.EditPageAPIResp
 	err = json.Unmarshal(body, &response)
 	if err != nil {
 		return err

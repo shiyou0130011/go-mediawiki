@@ -3,20 +3,9 @@ package mediawiki
 import (
 	"encoding/json"
 	"errors"
-)
 
-// Unmarshall response from page edits for query action
-type outerQuery struct {
-	Continue struct {
-		Cmcontinue string
-		Continue   string
-	}
-	Query struct {
-		Categorymembers []struct {
-			Title string
-		}
-	}
-}
+	"github.com/shiyou0130011/go-mediawiki/internal/dto/response"
+)
 
 // PageCategoryList returns a list of categories for the given page title.
 func (m *MWApi) PageCategoryList(title string) (result []string) {
@@ -31,7 +20,7 @@ func (m *MWApi) PageCategoryList(title string) (result []string) {
 		return
 	}
 
-	var apiResult parseResponse
+	var apiResult response.ParseAPIResp
 
 	if err := json.Unmarshal(b, &apiResult); err != nil {
 		return
@@ -85,7 +74,7 @@ func (m *MWApi) SearchByCategory(category string) (result []string) {
 		if err != nil {
 			break
 		}
-		o := outerQuery{}
+		o := response.CategorySearchResultResp{}
 		err = json.Unmarshal(data, &o)
 		if err != nil {
 			break

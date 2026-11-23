@@ -9,7 +9,8 @@ import (
 	"net/url"
 	"runtime"
 	"strings"
-	"time"
+
+	"github.com/shiyou0130011/go-mediawiki/internal/dto/response"
 )
 
 // MWApi is used to interact with the MediaWiki server.
@@ -27,61 +28,17 @@ type MWApi struct {
 	BasicAuthPass string
 }
 
-// PageSlice generates a slice from Pages to work around the sillyness in
-// the MediaWiki API.
-func (r *Response) PageSlice() []Page {
-	pl := []Page{}
-	for _, page := range r.Query.Pages {
-		pl = append(pl, page)
-	}
-	return pl
-}
-
 // A Page represents a MediaWiki page and its metadata.
-type Page struct {
-	Pageid    int
-	Ns        int
-	Title     string
-	Touched   string
-	Lastrevid int
-	// Mediawiki will return '' for zero, this makes me sad.
-	// If for some reason you need this value you'll have to
-	// do some type assertion sillyness.
-	Counter   interface{}
-	Length    int
-	Edittoken string
-	Revisions []struct {
-		Revid         int       `json:"revid"`
-		Parentid      int       `json:"parentid"`
-		Minor         string    `json:"minor"`
-		User          string    `json:"user"`
-		Userid        int       `json:"userid"`
-		Timestamp     time.Time `json:"timestamp"`
-		Size          int       `json:"size"`
-		Sha1          string    `json:"sha1"`
-		ContentModel  string    `json:"contentmodel"`
-		Comment       string    `json:"comment"`
-		ParsedComment string    `json:"parsedcomment"`
-		ContentFormat string    `json:"contentformat"`
-		Body          string    `json:"*"` // Take note, MediaWiki literally returns { '*':
-	}
-	Imageinfo []struct {
-		Url            string
-		Descriptionurl string
-	}
-}
+type Page = response.Page
 
 // Helper function for translating MediaWiki errors in to Golang errors.
-func checkError(response []byte) error {
-	var mwerror mwError
-	err := json.Unmarshal(response, &mwerror)
+func checkError(resp []byte) error {
+	var mwerror response.ErrorResp
+	err := json.Unmarshal(resp, &mwerror)
 	if err != nil {
 		return nil
-	} else if mwerror.Error.Code != "" {
-		return errors.New(mwerror.Error.Code + ": " + mwerror.Error.Info)
-	} else {
-		return nil
 	}
+	return &mwerror
 }
 
 // New generates a new MediaWiki API (MWApi) struct.
@@ -164,7 +121,7 @@ func (m *MWApi) Login(username, password string) error {
 		return err
 	}
 
-	var response outerLogin
+	var response response.LoginAPIResp
 	err = json.Unmarshal(body, &response)
 	if err != nil {
 		return err
@@ -214,12 +171,12 @@ func (m *MWApi) GetEditToken() error {
 	if err != nil {
 		return err
 	}
-	var response tokenResponse
-	err = json.Unmarshal(body, &response)
+	var tokenResponse response.TokenAPIResp
+	err = json.Unmarshal(body, &tokenResponse)
 	if err != nil {
 		return err
 	}
-	pl := response.Query.Tokens.Csrftoken
+	pl := tokenResponse.Query.Tokens.Csrftoken
 	if pl == "" {
 		return errors.New("no pages returned for edittoken query")
 	}
@@ -236,7 +193,7 @@ func (m *MWApi) Logout() {
 // returned.
 //
 // Deprecated: This func was from sadbox/mediawiki. It is not used in this library. Please use “func (*MWApi) PageContent(string)” to get the content of a page.
-func (m *MWApi) Read(pageName string) (*Page, error) {
+func (m *MWApi) Read(pageName string) (*response.Page, error) {
 	query := map[string]string{
 		"action":  "query",
 		"prop":    "revisions",
@@ -249,19 +206,19 @@ func (m *MWApi) Read(pageName string) (*Page, error) {
 		return nil, err
 	}
 
-	var response Response
-	err = json.Unmarshal(body, &response)
+	var pageResponse response.PageAPIResponse
+	err = json.Unmarshal(body, &pageResponse)
 	if err != nil {
 		return nil, err
 	}
 
-	if len(response.Query.Pages) != 1 {
+	if len(pageResponse.Query.Pages) != 1 {
 		return nil, errors.New("received unexpected number of pages")
 	}
 
 	// we use a hacky way of extracting the map's lone value
-	var page *Page
-	for _, pg := range response.Query.Pages {
+	var page *response.Page
+	for _, pg := range pageResponse.Query.Pages {
 		page = &pg
 	}
 	return page, nil

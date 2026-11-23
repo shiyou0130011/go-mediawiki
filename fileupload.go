@@ -8,6 +8,8 @@ import (
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
+
+	"github.com/shiyou0130011/go-mediawiki/internal/dto/response"
 )
 
 type UploadConfig struct {
@@ -99,7 +101,7 @@ func (m *MWApi) Upload(dstFilename string, file io.Reader, config *UploadConfig)
 		return err
 	}
 
-	var response uploadResponse
+	var response response.UploadAPIResp
 	err = json.Unmarshal(body, &response)
 	if err != nil {
 		return err

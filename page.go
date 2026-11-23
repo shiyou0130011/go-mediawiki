@@ -3,6 +3,8 @@ package mediawiki
 import (
 	"encoding/json"
 	"fmt"
+
+	"github.com/shiyou0130011/go-mediawiki/internal/dto/response"
 )
 
 // PageContent will return the content of a page in wikitext format.
@@ -20,7 +22,7 @@ func (m *MWApi) PageContent(title string) (string, error) {
 	if err = checkError(data); err != nil {
 		return "", err
 	}
-	var result parseResponse
+	var result response.ParseAPIResp
 	if err := json.Unmarshal(data, &result); err != nil {
 		return "", err
 	}
@@ -45,7 +47,7 @@ func (m *MWApi) SectionContent(title string, sectionIndex int) (string, error) {
 		return "", err
 	}
 
-	var result parseResponse
+	var result response.ParseAPIResp
 	if err := json.Unmarshal(data, &result); err != nil {
 		return "", err
 	}
@@ -68,7 +70,7 @@ func (m *MWApi) SectionTitleList(title string) (result []string, err error) {
 	if err = checkError(data); err != nil {
 		return
 	}
-	var respResult parseResponse
+	var respResult response.ParseAPIResp
 	if err = json.Unmarshal(data, &respResult); err != nil {
 		return
 	}
