@@ -121,20 +121,20 @@ func (m *MWApi) Login(username, password string) error {
 		return err
 	}
 
-	var response response.LoginAPIResp
-	err = json.Unmarshal(body, &response)
+	var loginResp response.LoginAPIResp
+	err = json.Unmarshal(body, &loginResp)
 	if err != nil {
 		return err
 	}
 
-	if response.Login.Result == "Success" {
+	if loginResp.Login.Result == "Success" {
 		return nil
-	} else if response.Login.Result != "NeedToken" {
-		return errors.New("Error logging in: " + response.Login.Result)
+	} else if loginResp.Login.Result != "NeedToken" {
+		return errors.New("Error logging in: " + loginResp.Login.Result)
 	}
 
 	// Need to use the login token
-	query["lgtoken"] = response.Login.Token
+	query["lgtoken"] = loginResp.Login.Token
 
 	body, err = m.API(query)
 	if err != nil {
@@ -146,8 +146,8 @@ func (m *MWApi) Login(username, password string) error {
 		return err
 	}
 
-	if response.Login.Result != "Success" {
-		return errors.New("Error logging in: " + response.Login.Result)
+	if loginResp.Login.Result != "Success" {
+		return errors.New("Error logging in: " + loginResp.Login.Result)
 	}
 	return nil
 }
