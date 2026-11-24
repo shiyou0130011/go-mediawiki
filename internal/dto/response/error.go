@@ -7,9 +7,13 @@ type ErrorResp struct {
 	} `json:"error"`
 }
 
+func (e *ErrorResp) IsEmpty() bool {
+	return e.ErrorBody.Code == "" && e.ErrorBody.Info == ""
+}
+
 func (e *ErrorResp) Error() string {
 	if e.ErrorBody.Code == "" && e.ErrorBody.Info == "" {
-		return "unknown error"
+		return "no error"
 	}
 	if e.ErrorBody.Info == "" {
 		return e.ErrorBody.Code

@@ -38,6 +38,9 @@ func checkError(resp []byte) error {
 	if err != nil {
 		return nil
 	}
+	if mwerror.IsEmpty(){
+		return nil
+	} 
 	return &mwerror
 }
 
