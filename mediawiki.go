@@ -141,7 +141,7 @@ func (m *MWApi) Login(username, password string) error {
 		return err
 	}
 
-	err = json.Unmarshal(body, &response)
+	err = json.Unmarshal(body, &loginResp)
 	if err != nil {
 		return err
 	}
